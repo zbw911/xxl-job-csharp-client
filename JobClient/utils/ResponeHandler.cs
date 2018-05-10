@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Net;
 
-namespace ConsoleApp1
+namespace JobClient
 {
     public static class ResponeHandler
     {

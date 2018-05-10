@@ -1,7 +1,7 @@
-﻿using ConsoleApp1.glue;
-using ConsoleApp1.handler;
-using ConsoleApp1.log;
-using ConsoleApp1.model;
+﻿using JobClient.glue;
+using JobClient.handler;
+using JobClient.log;
+using JobClient.model;
 using log4net;
 using log4net.Repository.Hierarchy;
 using System;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1.impl
+namespace JobClient.impl
 {
     public class ExecutorBizImpl
     {

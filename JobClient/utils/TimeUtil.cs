@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1.utils
+namespace JobClient.utils
 {
     class TimeUtil
     {
-        private static readonly DateTime Jan1st1970 = new DateTime
-    (1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        private static readonly DateTime Jan1st1970 = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         public static long CurrentTimeMillis()
         {

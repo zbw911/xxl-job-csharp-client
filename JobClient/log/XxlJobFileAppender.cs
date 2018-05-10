@@ -1,4 +1,4 @@
-﻿using ConsoleApp1.model;
+﻿using JobClient.model;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1.log
+namespace JobClient.log
 {
     public class XxlJobFileAppender
     {

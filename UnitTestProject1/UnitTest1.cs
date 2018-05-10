@@ -1,6 +1,5 @@
 ﻿using System;
-using ConsoleApp1.log;
-using ConsoleApp1.utils;
+using JobClient.log;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTestProject1

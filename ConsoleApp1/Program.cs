@@ -1,6 +1,8 @@
-﻿using ConsoleApp1.impl;
-using ConsoleApp1.model;
-using ConsoleApp1.utils;
+﻿
+using JobClient;
+using JobClient.impl;
+using JobClient.model;
+using JobClient.utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
