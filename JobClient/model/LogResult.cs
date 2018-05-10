@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace JobClient.model
 {
+    [Serializable]
     public class LogResult
     {
-
+        
         public int fromLineNum { get; set; }
         public int toLineNum { get; set; }
         public String logContent { get; set; }

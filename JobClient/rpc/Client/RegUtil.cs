@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace JobClient.utils
 {
-    public class JsonUtil
+    public class RegUtil
     {
 
-        public static string Registry()
+        public static string Registry(string adminaddresses, string executorappname, string executorip, int executorPort, string accessToken)
         {
 
             /*
@@ -36,24 +36,23 @@ namespace JobClient.utils
             RegistryParam registryParam = new RegistryParam
             {
                 registGroup = "EXECUTOR",
-                registryKey = "windows-job",
-                registryValue = "127.0.0.1:7070"
+                registryKey = executorappname,
+                registryValue = $"{executorip}:{executorPort}"
             };
 
             RpcRequest rpcRequest = new RpcRequest
             {
-                accessToken = null,
+                accessToken = accessToken,
                 className = "com.xxl.job.core.biz.AdminBiz",
                 createMillisTime = TimeUtil.CurrentTimeMillis(),
                 methodName = "registry",
                 parameters = new object[] { registryParam },
                 parameterTypes = new[] { "com.xxl.job.core.biz.model.RegistryParam" },
-                serverAddress = "http://127.0.0.1:8080/api",
+                serverAddress = adminaddresses + "/api",
             };
 
             var str = Newtonsoft.Json.JsonConvert.SerializeObject(rpcRequest);
 
-            //Console.WriteLine(str);
 
             return str;
         }

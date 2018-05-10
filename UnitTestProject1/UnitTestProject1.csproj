@@ -48,7 +48,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="executor\XxlJobExecutorTests.cs" />
     <Compile Include="log\XxlJobLoggerTests.cs" />
+    <Compile Include="customHandler\TestHandler.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

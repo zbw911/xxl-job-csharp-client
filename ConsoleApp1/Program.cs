@@ -1,5 +1,6 @@
 ﻿
 using JobClient;
+using JobClient.executor;
 using JobClient.impl;
 using JobClient.model;
 using JobClient.utils;
@@ -20,34 +21,42 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
 
-            HttpServer httpServer = new HttpServer(1);
-            httpServer.Start(7070);
-            httpServer.ProcessRequest += HttpServer_ProcessRequest;
-            //JsonTest();
+            //HttpServer httpServer = new HttpServer(1);
+            //httpServer.Start(7070);
+            //httpServer.ProcessRequest += HttpServer_ProcessRequest;
+            ////JsonTest();
 
-            Reg();
+            //Reg();
+
+            XxlJobExecutor xxlJobExecutor = new XxlJobExecutor();
+            xxlJobExecutor.setLocalIp("127.0.0.1");
+            xxlJobExecutor.setAppName("windows-job");
+            //xxlJobExecutor.setLogPath("");
+            xxlJobExecutor.setAdminAddresses("http://localhost:8080");
+            xxlJobExecutor.setPort(7070);
+            xxlJobExecutor.start();
 
 
             Console.ReadKey();
         }
 
 
-        static void Reg()
-        {
-            var t = new Thread(x =>
-            {
-                while (true)
-                {
-                    var result = requestTo("http://localhost:8080/api", JsonUtil.Registry());
+        //static void Reg()
+        //{
+        //    var t = new Thread(x =>
+        //    {
+        //        while (true)
+        //        {
+        //            var result = requestTo("http://localhost:8080/api", RegUtil.Registry());
 
-                    Console.WriteLine("注册" + result);
+        //            Console.WriteLine("注册" + result);
 
-                    Thread.Sleep(30 * 1000);
-                }
+        //            Thread.Sleep(30 * 1000);
+        //        }
 
-            });
-            t.Start();
-        }
+        //    });
+        //    t.Start();
+        //}
 
         private static void HttpServer_ProcessRequest(HttpListenerContext obj)
         {
@@ -97,50 +106,8 @@ namespace ConsoleApp1
          {"serverAddress":"127.0.0.1:7070","createMillisTime":1525927906577,"accessToken":"","className":"com.xxl.job.core.biz.ExecutorBiz","methodName":"run","parameterTypes":["com.xxl.job.core.biz.model.TriggerParam"],"parameters":[{"jobId":8,"executorHandler":"shardingJobHandler","executorParams":"","executorBlockStrategy":"SERIAL_EXECUTION","logId":188541,"logDateTim":1525927906577,"glueType":"BEAN","glueSource":"","glueUpdatetime":1525927571000,"broadcastIndex":0,"broadcastTotal":1}]}
          * 
          * */
-          
-        private static string requestTo(string url, string requestStr)
-        {
-            HttpWebRequest httpWebRequest = WebRequest.Create(url) as HttpWebRequest;
 
-            httpWebRequest.Timeout = 30 * 1000;// timeout;
-            httpWebRequest.Method = "POST";
-            //    httpWebRequest.ContentType = "application/x-www-form-urlencoded";
 
-            Stream myResponseStream = null;
-            StreamReader myStreamReader = null;
-            Stream requestStream = null;
-
-            try
-            {
-                Encoding encoding = Encoding.GetEncoding("UTF-8");
-                byte[] postData = encoding.GetBytes(requestStr);
-                httpWebRequest.ContentLength = postData.Length;
-                requestStream = httpWebRequest.GetRequestStream();
-                requestStream.Write(postData, 0, postData.Length);
-
-                HttpWebResponse response = (HttpWebResponse)httpWebRequest.GetResponse();
-                myResponseStream = response.GetResponseStream();
-                myStreamReader = new StreamReader(myResponseStream, System.Text.Encoding.GetEncoding("UTF-8"));
-                string result = myStreamReader.ReadToEnd();
-                return result;
-            }
-            finally
-            {
-                if (myStreamReader != null)
-                {
-                    myStreamReader.Close();
-                }
-
-                if (myResponseStream != null)
-                {
-                    myResponseStream.Close();
-                }
-                if (requestStream != null)
-                {
-                    requestStream.Close();
-                }
-            }
-        }
     }
 
 

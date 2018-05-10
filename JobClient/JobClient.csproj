@@ -38,6 +38,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,9 +47,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="executor\ClientSender.cs" />
+    <Compile Include="executor\ServerDispose.cs" />
+    <Compile Include="rpc\Client\RegUtil.cs" />
+    <Compile Include="Threads\JobThread.cs" />
+    <Compile Include="executor\XxlJobExecutor.cs" />
     <Compile Include="glue\GlueTypeEnum.cs" />
+    <Compile Include="handler\JobHanderAttribute.cs" />
     <Compile Include="handler\IJobHandler.cs" />
-    <Compile Include="HttpServers.cs" />
+    <Compile Include="utils\HttpServers.cs" />
     <Compile Include="impl\ExecutorBizImpl.cs" />
     <Compile Include="log\XxlJobFileAppender.cs" />
     <Compile Include="log\XxlJobLogger.cs" />
@@ -59,7 +66,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="rpc\RpcRequest.cs" />
     <Compile Include="rpc\RpcResponse.cs" />
-    <Compile Include="utils\JsonUtil.cs" />
+    <Compile Include="utils\AssemblyManager.cs" />
     <Compile Include="utils\ResponeHandler.cs" />
     <Compile Include="utils\TimeUtil.cs" />
   </ItemGroup>
