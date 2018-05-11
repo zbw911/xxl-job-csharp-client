@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="biz\AdminBiz.cs" />
     <Compile Include="executor\ServerDispose.cs" />
     <Compile Include="glue\ExecutorBlockStrategyEnum.cs" />
     <Compile Include="model\HandleCallbackParam.cs" />

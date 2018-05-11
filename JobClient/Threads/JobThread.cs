@@ -94,7 +94,7 @@ namespace JobClient.executor
                         try
                         {
                             // log filename: yyyy-MM-dd/9999.log
-                            String logFileName = XxlJobFileAppender.makeLogFileName(new DateTime(triggerParam.logDateTim), triggerParam.logId);
+                            String logFileName = XxlJobFileAppender.makeLogFileName(TimeUtil.ToTime(triggerParam.logDateTim), triggerParam.logId);
 
                             XxlJobFileAppender.contextHolder.Value = (logFileName);
                             ShardingUtil.setShardingVo(new ShardingUtil.ShardingVO(triggerParam.broadcastIndex, triggerParam.broadcastTotal));

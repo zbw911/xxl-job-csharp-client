@@ -1,4 +1,5 @@
-﻿using JobClient.handler;
+﻿using JobClient.biz;
+using JobClient.handler;
 using JobClient.handler.attribute;
 using JobClient.log;
 using JobClient.utils;
@@ -44,6 +45,9 @@ namespace JobClient.executor
         {
             this.accessToken = accessToken;
         }
+
+
+
         public void setLogPath(String logPath)
         {
             this.logPath = logPath;
@@ -152,7 +156,7 @@ namespace JobClient.executor
 
             //JobThread oldJobThread
             JobThreadRepository.TryGetValue(jobId, out JobThread oldJobThread);
-               
+
             if (oldJobThread != null)
             {
                 oldJobThread.toStop(removeOldReason);
@@ -179,6 +183,34 @@ namespace JobClient.executor
         }
 
         #endregion
+
+
+        // ---------------------- admin-client ----------------------
+        private static List<AdminBiz> adminBizList;
+        private static void initAdminBizList(String adminAddresses, String accessToken)
+        {
+            if (adminAddresses != null && adminAddresses.Trim().Length > 0)
+            {
+                foreach (String address in adminAddresses.Trim().Split(','))
+                {
+                    if (address != null && address.Trim().Length > 0)
+                    {
+                        String addressUrl = address + (AdminBiz.MAPPING);
+                        AdminBiz adminBiz = new AdminBiz(address, accessToken);
+                        if (adminBizList == null)
+                        {
+                            adminBizList = new List<AdminBiz>();
+                        }
+                        adminBizList.Add(adminBiz);
+                    }
+                }
+            }
+        }
+        public static List<AdminBiz> getAdminBizList()
+        {
+            return adminBizList;
+        }
+
         public static void TestInner()
         {
             initJobHandlerRepository();

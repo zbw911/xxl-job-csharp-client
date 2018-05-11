@@ -14,5 +14,10 @@ namespace JobClient.utils
         {
             return (long)(DateTime.UtcNow - Jan1st1970).TotalMilliseconds;
         }
+
+        public static DateTime ToTime(long timeMillis)
+        {
+            return Jan1st1970.AddMilliseconds(timeMillis);
+        }
     }
 }
