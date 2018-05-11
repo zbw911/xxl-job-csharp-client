@@ -1,4 +1,5 @@
-﻿using JobClient.glue;
+﻿using JobClient.executor;
+using JobClient.glue;
 using JobClient.handler;
 using JobClient.log;
 using JobClient.model;
@@ -47,6 +48,7 @@ namespace JobClient.impl
         public ReturnT<LogResult> log(long logDateTim, int logId, int fromLineNum)
         {
             // log filename: yyyy-MM-dd/9999.log
+            //todo:这里时间戳转换应该会问题
             String logFileName = XxlJobFileAppender.makeLogFileName(new DateTime(logDateTim), logId);
 
             LogResult logResult = XxlJobFileAppender.readLog(logFileName, fromLineNum);
@@ -56,24 +58,83 @@ namespace JobClient.impl
         public ReturnT<String> run(TriggerParam triggerParam)
         {
 
-
+            //// load old：jobHandler + jobThread
+            JobThread jobThread = XxlJobExecutor.loadJobThread(triggerParam.jobId);
+            IJobHandler jobHandler = jobThread != null ? jobThread.getHandler() : null;
+            String removeOldReason = null;
             switch (triggerParam.glueType)
             {
                 case "BEAN":
                     {
+                        IJobHandler newJobHandler = XxlJobExecutor.loadJobHandler(triggerParam.executorHandler);
+
+                        // valid old jobThread
+                        if (jobThread != null && jobHandler != newJobHandler)
+                        {
+                            // change handler, need kill old thread
+                            removeOldReason = "更换JobHandler或更换任务模式,终止旧任务线程";
+
+                            jobThread = null;
+                            jobHandler = null;
+                        }
+
+                        // valid handler
+                        if (jobHandler == null)
+                        {
+                            jobHandler = newJobHandler;
+                            if (jobHandler == null)
+                            {
+                                return new ReturnT<String>(ReturnT<string>.FAIL_CODE, "job handler [" + triggerParam.executorHandler + "] not found.");
+                            }
+                        }
                         break;
                     }
                 default:
                     {
                         return new ReturnT<String>(ReturnT<string>.FAIL_CODE, "glueType[" + triggerParam.glueType + "] is not valid.");
                     }
-
             }
 
 
 
-            if (true)
-                return ReturnT<String>.SUCCESS;
+            //// executor block strategy
+            if (jobThread != null)
+            {
+                throw new NotImplementedException();
+                ExecutorBlockStrategyEnum blockStrategy = ExecutorBlockStrategyEnum.COVER_EARLY;
+                if (ExecutorBlockStrategyEnum.DISCARD_LATER == blockStrategy)
+                {
+                    // discard when running
+                    if (jobThread.isRunningOrHasQueue())
+                    {
+                        return new ReturnT<String>(ReturnT<string>.FAIL_CODE, "阻塞处理策略-生效：" + ExecutorBlockStrategyEnum.DISCARD_LATER.ToString());
+                    }
+                }
+                else if (ExecutorBlockStrategyEnum.COVER_EARLY == blockStrategy)
+                {
+                    // kill running jobThread
+                    if (jobThread.isRunningOrHasQueue())
+                    {
+                        removeOldReason = "阻塞处理策略-生效：" + ExecutorBlockStrategyEnum.COVER_EARLY.ToString();
+
+                        jobThread = null;
+                    }
+                }
+                else
+                {
+                    // just queue trigger
+                }
+            }
+
+            // replace thread (new or exists invalid)
+            if (jobThread == null)
+            {
+                jobThread = XxlJobExecutor.registJobThread(triggerParam.jobId, jobHandler, removeOldReason);
+            }
+
+            // push data to queue
+            ReturnT<String> pushResult = jobThread.pushTriggerQueue(triggerParam);
+            return pushResult;
 
             //// load old：jobHandler + jobThread
             //JobThread jobThread = XxlJobExecutor.loadJobThread(triggerParam.jobId);

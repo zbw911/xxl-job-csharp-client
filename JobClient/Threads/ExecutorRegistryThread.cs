@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace JobClient.executor
 {
-    class ClientSender
+    class ExecutorRegistryThread
     {
 
 

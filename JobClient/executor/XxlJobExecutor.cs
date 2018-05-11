@@ -73,7 +73,7 @@ namespace JobClient.executor
         {
             port = ServerDispose.Start(port);
 
-            ClientSender.RegJobThread(adminAddresses, appName, ip, port, accessToken);
+            ExecutorRegistryThread.RegJobThread(adminAddresses, appName, ip, port, accessToken);
 
         }
 
@@ -149,12 +149,17 @@ namespace JobClient.executor
             newJobThread.start();
             logger.InfoFormat(">>>>>>>>>>> xxl-job regist JobThread success, jobId:{}, handler:{}", new Object[] { jobId, handler });
 
-            JobThread oldJobThread = JobThreadRepository.GetOrAdd(jobId, newJobThread);  // putIfAbsent | oh my god, map's put method return the old value!!!
+
+            //JobThread oldJobThread
+            JobThreadRepository.TryGetValue(jobId, out JobThread oldJobThread);
+               
             if (oldJobThread != null)
             {
                 oldJobThread.toStop(removeOldReason);
                 //oldJobThread.interrupt();
             }
+
+            JobThreadRepository.TryAdd(jobId, newJobThread);
 
             return newJobThread;
         }

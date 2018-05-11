@@ -47,14 +47,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="executor\ClientSender.cs" />
     <Compile Include="executor\ServerDispose.cs" />
+    <Compile Include="glue\ExecutorBlockStrategyEnum.cs" />
+    <Compile Include="model\HandleCallbackParam.cs" />
     <Compile Include="rpc\Client\RegUtil.cs" />
+    <Compile Include="Threads\ExecutorRegistryThread.cs" />
     <Compile Include="Threads\JobThread.cs" />
     <Compile Include="executor\XxlJobExecutor.cs" />
     <Compile Include="glue\GlueTypeEnum.cs" />
     <Compile Include="handler\JobHanderAttribute.cs" />
     <Compile Include="handler\IJobHandler.cs" />
+    <Compile Include="Threads\TriggerCallbackThread.cs" />
+    <Compile Include="utils\BlockingQueue.cs" />
+    <Compile Include="utils\ConcurrentHashSet.cs" />
     <Compile Include="utils\HttpServers.cs" />
     <Compile Include="impl\ExecutorBizImpl.cs" />
     <Compile Include="log\XxlJobFileAppender.cs" />
@@ -68,6 +73,7 @@
     <Compile Include="rpc\RpcResponse.cs" />
     <Compile Include="utils\AssemblyManager.cs" />
     <Compile Include="utils\ResponeHandler.cs" />
+    <Compile Include="utils\ShardingUtil.cs" />
     <Compile Include="utils\TimeUtil.cs" />
   </ItemGroup>
   <ItemGroup>

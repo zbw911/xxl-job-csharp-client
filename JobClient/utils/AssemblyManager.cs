@@ -256,7 +256,7 @@ namespace JobClient.utils
                 string directory = HostingEnvironment.IsHosted
                     ? HttpRuntime.BinDirectory
                     : Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
-                return Directory.GetFiles(directory, "*.dll");
+                return Directory.GetFiles(directory, "*.dll").Union(Directory.GetFiles(directory, "*.exe"));
             }
 
             // Return all the App_Code assemblies
