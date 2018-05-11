@@ -82,11 +82,6 @@
     <Compile Include="utils\TimeUtil.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="impl\ExecutorBizImpl.java" />
-    <Content Include="log\XxlJobFileAppender.java" />
-    <Content Include="log\XxlJobLogger.java" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
