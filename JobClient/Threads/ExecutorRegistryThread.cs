@@ -18,22 +18,22 @@ namespace JobClient.executor
     {
         private static ILog logger = Log4netManager.GetLogger(typeof(ExecutorRegistryThread));
 
-        public static void RegJobThread(string adminaddresses, string executorappname, string executorip, int executorPort, string accessToken)
-        {
-            var t = new Thread(x =>
-            {
-                while (true)
-                {
-                    var result = requestTo($"{adminaddresses}/api", RegUtil.Registry(adminaddresses, executorappname, executorip, executorPort, accessToken));
+        //public static void RegJobThread(string adminaddresses, string executorappname, string executorip, int executorPort, string accessToken)
+        //{
+        //    var t = new Thread(x =>
+        //    {
+        //        while (true)
+        //        {
+        //            var result = requestTo($"{adminaddresses}/api", RegUtil.Registry(adminaddresses, executorappname, executorip, executorPort, accessToken));
 
-                    Console.WriteLine("注册" + result);
+        //            Console.WriteLine("注册" + result);
 
-                    Thread.Sleep(30 * 1000);
-                }
+        //            Thread.Sleep(30 * 1000);
+        //        }
 
-            });
-            t.Start();
-        }
+        //    });
+        //    t.Start();
+        //}
 
 
         private static ExecutorRegistryThread instance = new ExecutorRegistryThread();

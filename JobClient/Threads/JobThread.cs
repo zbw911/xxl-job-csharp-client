@@ -25,7 +25,8 @@ namespace JobClient.executor
         private String stopReason;
 
         private bool running = false;    // if running job
-        private int idleTimes = 0;			// idel times
+        private int idleTimes = 0;          // idel times
+        private Thread thread;
 
         public JobThread(int jobId, IJobHandler handler)
         {
@@ -51,11 +52,11 @@ namespace JobClient.executor
         internal void start()
         {
 
-            var thread = new Thread(x =>
-            {
-                innerStart();
-            }
-            );
+            thread = new Thread(x =>
+          {
+              innerStart();
+          }
+          );
 
             thread.Start();
 
@@ -191,6 +192,11 @@ namespace JobClient.executor
 		 */
             this.toStop1 = true;
             this.stopReason = stopReason;
+
+            if (thread != null)
+            {
+                this.thread.Interrupt();
+            }
         }
 
         public IJobHandler getHandler()

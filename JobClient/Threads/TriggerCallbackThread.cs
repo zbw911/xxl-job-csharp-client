@@ -69,8 +69,8 @@ namespace JobClient.executor
                                 doCallback(callbackParamList);
                             }
                         }
-
-                        Thread.Sleep(2 * 1000);
+                        if (callback == null)
+                            Thread.Sleep(10);
                     }
                     catch (Exception e)
                     {

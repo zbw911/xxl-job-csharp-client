@@ -50,13 +50,25 @@ namespace JobClient.executor
                     }
                 case "kill":
                     {
-                        throw new NotImplementedException();
+                        invokeResult = executorBizImpl.kill(int.Parse(rpcrequest.parameters[0].ToString()));
+
                         break;
                     }
                 case "log":
                     {
                         invokeResult = executorBizImpl.log(long.Parse(rpcrequest.parameters[0].ToString()), int.Parse(rpcrequest.parameters[1].ToString()), int.Parse(rpcrequest.parameters[2].ToString()));
 
+                        break;
+                    }
+                case "idleBeat":
+                    {
+                        invokeResult = executorBizImpl.idleBeat(int.Parse(rpcrequest.parameters[0].ToString()));
+                        break;
+                    }
+
+                case "beat":
+                    {
+                        invokeResult = executorBizImpl.beat();
                         break;
                     }
                 default:

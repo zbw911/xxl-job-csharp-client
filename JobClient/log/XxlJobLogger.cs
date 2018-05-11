@@ -28,11 +28,19 @@ namespace JobClient.log
             //StackTraceElement callInfo = stackTraceElements[1];
 
             StackTrace st = new StackTrace(true);
-            var frame = st.GetFrame(0);
+            var frame = st.GetFrame(1);
+
+            //for (int i = 0; i < st.GetFrames().Length; i++)
+            //{
+            //    Console.WriteLine($"{i} **************" + st.GetFrame(i).GetMethod());
+
+            //}
+
+            //Console.WriteLine("*****************OVER*********************");
 
             StringBuilder stringBuffer = new StringBuilder();
             stringBuffer.Append(System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")).Append(" ")
-                .Append("[" + frame.GetFileName() + "]").Append("-")
+                .Append("[" + frame.GetMethod().DeclaringType.Name + "]").Append("-")
                 .Append("[" + frame.GetMethod().Name + "]").Append("-")
                 .Append("[" + frame.GetFileLineNumber() + "]").Append("-")
                 .Append("[" + Thread.CurrentThread.ManagedThreadId + "]").Append(" ")

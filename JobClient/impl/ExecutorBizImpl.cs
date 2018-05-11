@@ -27,22 +27,35 @@ namespace JobClient.impl
         public ReturnT<String> idleBeat(int jobId)
         {
 
-            //// isRunningOrHasQueue
-            //boolean isRunningOrHasQueue = false;
-            //JobThread jobThread = XxlJobExecutor.loadJobThread(jobId);
-            //if (jobThread != null && jobThread.isRunningOrHasQueue())
-            //{
-            //    isRunningOrHasQueue = true;
-            //}
+            // isRunningOrHasQueue
+            bool isRunningOrHasQueue = false;
+            JobThread jobThread = XxlJobExecutor.loadJobThread(jobId);
+            if (jobThread != null && jobThread.isRunningOrHasQueue())
+            {
+                isRunningOrHasQueue = true;
+            }
 
-            //if (isRunningOrHasQueue)
-            //{
-            //    return new ReturnT<String>(ReturnT.FAIL_CODE, "job thread is running or has trigger queue.");
-            //}
-            //return ReturnT.SUCCESS;
+            if (isRunningOrHasQueue)
+            {
+                return new ReturnT<String>(ReturnT<string>.FAIL_CODE, "job thread is running or has trigger queue.");
+            }
+            return ReturnT<string>.SUCCESS;
 
 
-            throw new NotImplementedException();
+        }
+
+
+        public ReturnT<String> kill(int jobId)
+        {
+            // kill handlerThread, and create new one
+            JobThread jobThread = XxlJobExecutor.loadJobThread(jobId);
+            if (jobThread != null)
+            {
+                XxlJobExecutor.removeJobThread(jobId, "人工手动终止");
+                return ReturnT<string>.SUCCESS;
+            }
+
+            return new ReturnT<String>(ReturnT<string>.SUCCESS_CODE, "job thread aleady killed.");
         }
 
 
@@ -125,7 +138,7 @@ namespace JobClient.impl
                 {
                     // just queue trigger
                 }
-                 
+
             }
 
             // replace thread (new or exists invalid)

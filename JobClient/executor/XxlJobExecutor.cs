@@ -175,7 +175,6 @@ namespace JobClient.executor
             if (oldJobThread != null)
             {
                 oldJobThread.toStop(removeOldReason);
-
             }
         }
         public static JobThread loadJobThread(int jobId)

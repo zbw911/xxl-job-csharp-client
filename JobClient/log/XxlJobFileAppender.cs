@@ -97,7 +97,7 @@ namespace JobClient.log
                     string line = reader.ReadLine();
                     if (line == null)
                         break;
-                    if (toLineNum++ >= fromLineNum)
+                    if (++toLineNum >= fromLineNum)
                     {
                         logContentBuffer.Append(line).Append("\n");
                     }
