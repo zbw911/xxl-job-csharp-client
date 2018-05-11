@@ -16,7 +16,7 @@ namespace JobClient.executor
         private IJobHandler handler;
 
         //BlockingCollection<TriggerParam> triggerQueue;
-        ConcurrentQueue<TriggerParam> triggerQueue = new ConcurrentQueue<TriggerParam>();
+        BlockingCollection<TriggerParam> triggerQueue = new BlockingCollection<TriggerParam>();
         //private LinkedBlockingQueue<TriggerParam> triggerQueue;
         private ConcurrentHashSet<int> triggerLogIdSet;     // avoid repeat trigger for the same TRIGGER_LOG_ID
 
@@ -33,7 +33,7 @@ namespace JobClient.executor
             this.jobId = jobId;
             this.handler = handler;
 
-            this.triggerQueue = new ConcurrentQueue<TriggerParam>();// new BlockingCollection<TriggerParam>();
+            this.triggerQueue = new BlockingCollection<TriggerParam>();// new BlockingCollection<TriggerParam>();
             this.triggerLogIdSet = new ConcurrentHashSet<int>();
         }
         public ReturnT<String> pushTriggerQueue(TriggerParam triggerParam)
@@ -46,7 +46,7 @@ namespace JobClient.executor
             }
 
             triggerLogIdSet.Add(triggerParam.logId);
-            triggerQueue.Enqueue(triggerParam);
+            triggerQueue.Add(triggerParam);
             return ReturnT<string>.SUCCESS;
         }
         internal void start()
@@ -73,12 +73,8 @@ namespace JobClient.executor
                 try
                 {
                     // to check toStop signal, we need cycle, so wo cannot use queue.take(), instand of poll(timeout)
-                    var result = triggerQueue.TryDequeue(out TriggerParam triggerParam);
+                    var result = triggerQueue.TryTake(out TriggerParam triggerParam, 3 * 1000);
 
-                    if (!result || triggerParam == null)
-                    {
-                        Thread.Sleep(3 * 1000);
-                    }
 
                     if (triggerParam != null)
                     {
@@ -161,7 +157,7 @@ namespace JobClient.executor
             // callback trigger request in queue
             while (triggerQueue != null && triggerQueue.Count > 0)
             {
-                triggerQueue.TryDequeue(out TriggerParam triggerParam);
+                triggerQueue.TryTake(out TriggerParam triggerParam);
                 if (triggerParam != null)
                 {
                     // is killed

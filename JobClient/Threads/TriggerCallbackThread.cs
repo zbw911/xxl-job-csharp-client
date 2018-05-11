@@ -24,10 +24,10 @@ namespace JobClient.executor
         /**
          * job results callback queue
          */
-        private ConcurrentQueue<HandleCallbackParam> callBackQueue = new ConcurrentQueue<HandleCallbackParam>();
+        private BlockingCollection<HandleCallbackParam> callBackQueue = new BlockingCollection<HandleCallbackParam>();
         public static void pushCallBack(HandleCallbackParam callback)
         {
-            getInstance().callBackQueue.Enqueue(callback);
+            getInstance().callBackQueue.Add(callback);
             logger.Debug(string.Format(">>>>>>>>>>> xxl-job, push callback request, logId:{0}", callback.logId));
         }
 
@@ -53,7 +53,7 @@ namespace JobClient.executor
                 {
                     try
                     {
-                        getInstance().callBackQueue.TryDequeue(out HandleCallbackParam callback);
+                        getInstance().callBackQueue.TryTake(out HandleCallbackParam callback);
                         if (callback != null)
                         {
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using JobClient.utils;
+using log4net;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -11,6 +13,8 @@ namespace JobClient
 {
     public class HttpServer : IDisposable
     {
+
+        private static ILog logger = Log4netManager.GetLogger(typeof(HttpServer));
         private readonly HttpListener _listener;
         private readonly Thread _listenerThread;
         private readonly Thread[] _workers;
@@ -36,7 +40,10 @@ namespace JobClient
             }
 
 
-            Console.WriteLine($"Port=>{port}");
+            //Console.WriteLine($"Port=>{port}");
+
+
+            logger.Info($"start server port={port}");
 
             this._listener.Prefixes.Add(String.Format(@"http://+:{0}/", port == 0 ? GetRandomUnusedPort() : port));
 
@@ -109,8 +116,8 @@ namespace JobClient
             }
             catch (Exception e)
             {
-
-                Console.Error.WriteLine(e);
+                logger.Error(e);
+             
             }
         }
 
@@ -137,8 +144,8 @@ namespace JobClient
                 }
                 catch (Exception e)
                 {
-
-                    Console.Error.WriteLine(e);
+                    logger.Error(e);
+                  
                 }
             }
         }
