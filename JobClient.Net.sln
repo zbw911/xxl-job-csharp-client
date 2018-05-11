@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobClient", "JobClient\JobC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDll", "TestDll\TestDll.csproj", "{7F52D229-EB52-4B25-B9A3-5F9559E597DB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobClient.Server", "JobClient.Server\JobClient.Server.csproj", "{3A01A7A9-CF97-4F76-9603-BFC247E71E5E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{7F52D229-EB52-4B25-B9A3-5F9559E597DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F52D229-EB52-4B25-B9A3-5F9559E597DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F52D229-EB52-4B25-B9A3-5F9559E597DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A01A7A9-CF97-4F76-9603-BFC247E71E5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A01A7A9-CF97-4F76-9603-BFC247E71E5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A01A7A9-CF97-4F76-9603-BFC247E71E5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A01A7A9-CF97-4F76-9603-BFC247E71E5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
