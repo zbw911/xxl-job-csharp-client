@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDll", "TestDll\TestDll.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobClient.Server", "JobClient.Server\JobClient.Server.csproj", "{3A01A7A9-CF97-4F76-9603-BFC247E71E5E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{E8248171-6578-42D7-B6EB-A5FBCC6979E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobClient.WebStarter", "JobClient.WebStarter\JobClient.WebStarter.csproj", "{59DD931A-2DF3-4016-A2F4-1266424DB1D7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,9 +43,18 @@ Global
 		{3A01A7A9-CF97-4F76-9603-BFC247E71E5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A01A7A9-CF97-4F76-9603-BFC247E71E5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A01A7A9-CF97-4F76-9603-BFC247E71E5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59DD931A-2DF3-4016-A2F4-1266424DB1D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59DD931A-2DF3-4016-A2F4-1266424DB1D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59DD931A-2DF3-4016-A2F4-1266424DB1D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59DD931A-2DF3-4016-A2F4-1266424DB1D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{97EADEFA-EA6E-4C16-8AA7-0931A85F7747} = {E8248171-6578-42D7-B6EB-A5FBCC6979E6}
+		{87AD9F4A-ABA5-4328-878D-2FC972E1A3D0} = {E8248171-6578-42D7-B6EB-A5FBCC6979E6}
+		{7F52D229-EB52-4B25-B9A3-5F9559E597DB} = {E8248171-6578-42D7-B6EB-A5FBCC6979E6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C30F32C7-49EA-4343-956B-0988FE5F6E29}
