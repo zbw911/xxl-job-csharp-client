@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.Threading;
 using JobClient.biz;
 using JobClient.model;
+using JobClient.utils;
 using log4net;
 
 namespace JobClient.executor
 {
     internal class TriggerCallbackThread
     {
-        private static ILog logger = LogManager.GetLogger(typeof(TriggerCallbackThread));
+        private static ILog logger = Log4netManager.GetLogger(typeof(TriggerCallbackThread));
 
 
 
@@ -27,7 +28,7 @@ namespace JobClient.executor
         public static void pushCallBack(HandleCallbackParam callback)
         {
             getInstance().callBackQueue.Enqueue(callback);
-            logger.DebugFormat(">>>>>>>>>>> xxl-job, push callback request, logId:{}", callback.logId);
+            logger.Debug(string.Format(">>>>>>>>>>> xxl-job, push callback request, logId:{0}", callback.logId));
         }
 
         /**
@@ -111,7 +112,7 @@ namespace JobClient.executor
             }
             catch (ThreadInterruptedException e)
             {
-                logger.ErrorFormat(e.Message, e);
+                logger.Error(e.Message, e);
             }
         }
 
@@ -130,17 +131,17 @@ namespace JobClient.executor
                     if (callbackResult != null && ReturnT<string>.SUCCESS_CODE == callbackResult.code)
                     {
                         callbackResult = ReturnT<string>.SUCCESS;
-                        logger.InfoFormat(">>>>>>>>>>> xxl-job callback success, callbackParamList:{}, callbackResult:{}", new Object[] { callbackParamList, callbackResult });
+                        logger.Info(string.Format(">>>>>>>>>>> xxl-job callback success, callbackParamList:{0}, callbackResult:{1}", callbackParamList, callbackResult));
                         break;
                     }
                     else
                     {
-                        logger.InfoFormat(">>>>>>>>>>> xxl-job callback fail, callbackParamList:{}, callbackResult:{}", new Object[] { callbackParamList, callbackResult });
+                        logger.Info(string.Format(">>>>>>>>>>> xxl-job callback fail, callbackParamList:{0}, callbackResult:{1}", callbackParamList, callbackResult));
                     }
                 }
                 catch (Exception e)
                 {
-                    logger.ErrorFormat(">>>>>>>>>>> xxl-job callback error, callbackParamList：{}", callbackParamList, e);
+                    logger.Error(string.Format(">>>>>>>>>>> xxl-job callback error, callbackParamList：{0}", callbackParamList), e);
                     //getInstance().callBackQueue.addAll(callbackParamList);
                 }
             }

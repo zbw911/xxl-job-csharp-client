@@ -31,26 +31,36 @@ namespace JobClient.executor
             {
                 text = reader.ReadToEnd();
 
-                Console.WriteLine(text);
+                //Console.WriteLine(text);
             }
 
             var rpcrequest = Newtonsoft.Json.JsonConvert.DeserializeObject<RpcRequest>(text);
 
             ExecutorBizImpl executorBizImpl = new ExecutorBizImpl();
+
+            object invokeResult = null;
+
             switch (rpcrequest.methodName)
             {
                 case "run":
                     {
 
-                        var result = executorBizImpl.run(Newtonsoft.Json.JsonConvert.DeserializeObject<TriggerParam>(rpcrequest.parameters[0].ToString()));
+                        invokeResult = executorBizImpl.run(Newtonsoft.Json.JsonConvert.DeserializeObject<TriggerParam>(rpcrequest.parameters[0].ToString()));
                         break;
                     }
                 case "kill":
                     {
+                        throw new NotImplementedException();
+                        break;
+                    }
+                case "log":
+                    {
+                        invokeResult = executorBizImpl.log(long.Parse(rpcrequest.parameters[0].ToString()), int.Parse(rpcrequest.parameters[1].ToString()), int.Parse(rpcrequest.parameters[2].ToString()));
 
                         break;
                     }
                 default:
+                    throw new NotImplementedException();
                     break;
             }
 
@@ -58,7 +68,7 @@ namespace JobClient.executor
             RpcResponse rpcResponse = new RpcResponse
             {
                 error = null,
-                result = ReturnT<string>.SUCCESS
+                result = invokeResult
             };
 
             ResponeHandler.ResponseHtml(obj.Response, Newtonsoft.Json.JsonConvert.SerializeObject(rpcResponse));

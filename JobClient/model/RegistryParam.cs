@@ -19,5 +19,15 @@ namespace JobClient
         public string registGroup { get; set; }
         public string registryKey { get; set; }
         public string registryValue { get; set; }
+
+
+        public override string ToString()
+        {
+            return "RegistryParam{" +
+              "registGroup='" + registGroup + '\'' +
+              ", registryKey='" + registryKey + '\'' +
+              ", registryValue='" + registryValue + '\'' +
+              '}';
+        }
     }
 }

@@ -15,7 +15,7 @@ namespace JobClient.executor
 {
     public class XxlJobExecutor
     {
-        private static ILog logger = LogManager.GetLogger(typeof(XxlJobExecutor));
+        private static ILog logger = Log4netManager.GetLogger(typeof(XxlJobExecutor));
 
         // ---------------------- param ----------------------
         private String Localip;
@@ -78,6 +78,9 @@ namespace JobClient.executor
 
             //ExecutorRegistryThread.RegJobThread(adminAddresses, appName, ip, port, accessToken);
             ExecutorRegistryThread.getInstance().start(port, ip, appName);
+
+
+            TriggerCallbackThread.getInstance().start();
         }
 
         public void destroy()
@@ -107,7 +110,7 @@ namespace JobClient.executor
         private static ConcurrentDictionary<String, IJobHandler> jobHandlerRepository = new ConcurrentDictionary<String, IJobHandler>();
         public static IJobHandler registJobHandler(String name, IJobHandler jobHandler)
         {
-            logger.InfoFormat(">>>>>>>>>>> xxl-job register jobhandler success, name:{}, jobHandler:{}", name, jobHandler);
+            logger.Info(string.Format(">>>>>>>>>>> xxl-job register jobhandler success, name:{0}, jobHandler:{1}", name, jobHandler));
             return jobHandlerRepository.GetOrAdd(name, jobHandler);
         }
         private static void initJobHandlerRepository()
@@ -150,7 +153,7 @@ namespace JobClient.executor
         {
             JobThread newJobThread = new JobThread(jobId, handler);
             newJobThread.start();
-            logger.InfoFormat(">>>>>>>>>>> xxl-job regist JobThread success, jobId:{}, handler:{}", new Object[] { jobId, handler });
+            logger.Info(string.Format(">>>>>>>>>>> xxl-job regist JobThread success, jobId:{0}, handler:{1}",  jobId, handler ));
 
 
             //JobThread oldJobThread

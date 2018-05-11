@@ -11,7 +11,7 @@ namespace JobClient.executor
 {
     public class JobThread
     {
-        private static ILog logger = LogManager.GetLogger(typeof(JobThread));
+        private static ILog logger = Log4netManager.GetLogger(typeof(JobThread));
         private int jobId;
         private IJobHandler handler;
 
@@ -40,7 +40,7 @@ namespace JobClient.executor
             // avoid repeat
             if (triggerLogIdSet.Contains(triggerParam.logId))
             {
-                logger.DebugFormat("repeate trigger job, logId:{}", triggerParam.logId);
+                logger.Debug(string.Format("repeate trigger job, logId:{0}", triggerParam.logId));
                 return new ReturnT<String>(ReturnT<string>.FAIL_CODE, "repeate trigger job, logId:" + triggerParam.logId);
             }
 
@@ -169,7 +169,7 @@ namespace JobClient.executor
                 }
             }
 
-            logger.InfoFormat(">>>>>>>>>>>> xxl-job JobThread stoped, hashCode:{}", Thread.CurrentThread);
+            logger.Info(string.Format(">>>>>>>>>>>> xxl-job JobThread stoped, hashCode:{0}", Thread.CurrentThread));
         }
 
 

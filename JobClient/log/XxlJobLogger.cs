@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using JobClient.utils;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,7 +12,7 @@ namespace JobClient.log
 {
     public class XxlJobLogger
     {
-        static ILog logger = LogManager.GetLogger("xxl - job logger");
+        static ILog logger = Log4netManager.GetLogger("xxl - job logger");
         public static void log(string appendLog)
         {
 

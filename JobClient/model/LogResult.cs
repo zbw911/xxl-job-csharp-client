@@ -9,11 +9,11 @@ namespace JobClient.model
     [Serializable]
     public class LogResult
     {
-        
+
         public int fromLineNum { get; set; }
         public int toLineNum { get; set; }
         public String logContent { get; set; }
-        public bool isEnd { get; set; }
+        public bool end { get; set; }
         public LogResult()
         {
 
@@ -23,7 +23,7 @@ namespace JobClient.model
             this.fromLineNum = fromLineNum;
             this.toLineNum = toLineNum;
             this.logContent = logContent;
-            this.isEnd = isEnd;
+            this.end = isEnd;
         }
 
 

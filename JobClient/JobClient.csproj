@@ -75,6 +75,7 @@
     <Compile Include="rpc\RpcResponse.cs" />
     <Compile Include="utils\AssemblyManager.cs" />
     <Compile Include="utils\IpUtil.cs" />
+    <Compile Include="utils\Log4NetExtensions.cs" />
     <Compile Include="utils\Log4netManager.cs" />
     <Compile Include="utils\ResponeHandler.cs" />
     <Compile Include="utils\ShardingUtil.cs" />

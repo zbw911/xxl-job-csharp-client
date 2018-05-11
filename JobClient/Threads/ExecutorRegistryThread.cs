@@ -16,7 +16,7 @@ namespace JobClient.executor
 {
     class ExecutorRegistryThread
     {
-        private static ILog logger = LogManager.GetLogger(typeof(ExecutorRegistryThread));
+        private static ILog logger = Log4netManager.GetLogger(typeof(ExecutorRegistryThread));
 
         public static void RegJobThread(string adminaddresses, string executorappname, string executorip, int executorPort, string accessToken)
         {
@@ -124,17 +124,17 @@ namespace JobClient.executor
                 if (registryResult != null && ReturnT<string>.SUCCESS_CODE == registryResult.code)
                 {
                     registryResult = ReturnT<string>.SUCCESS;
-                    logger.InfoFormat(">>>>>>>>>>> xxl-job registry-remove success, registryParam:{}, registryResult:{}", new Object[] { registryParam, registryResult });
+                    logger.Info(string.Format(">>>>>>>>>>> xxl-job registry-remove success, registryParam:{0}, registryResult:{1}", registryParam, registryResult));
                     break;
                 }
                 else
                 {
-                    logger.InfoFormat(">>>>>>>>>>> xxl-job registry-remove fail, registryParam:{}, registryResult:{}", new Object[] { registryParam, registryResult });
+                    logger.Info(string.Format(">>>>>>>>>>> xxl-job registry-remove fail, registryParam:{0}, registryResult:{1}", registryParam, registryResult));
                 }
             }
             catch (Exception e)
             {
-                logger.InfoFormat(">>>>>>>>>>> xxl-job registry-remove error, registryParam:{}", registryParam, e);
+                logger.Info(string.Format(">>>>>>>>>>> xxl-job registry-remove error, registryParam:{0}", registryParam), e);
             }
 
         }

@@ -16,7 +16,7 @@ namespace JobClient.impl
 {
     public class ExecutorBizImpl
     {
-        private static ILog logger = LogManager.GetLogger(typeof(ExecutorBizImpl));
+        private static ILog logger = Log4netManager.GetLogger(typeof(ExecutorBizImpl));
 
         public ReturnT<string> beat()
         {
@@ -102,7 +102,7 @@ namespace JobClient.impl
             if (jobThread != null)
             {
 
-                ExecutorBlockStrategyEnum blockStrategy = ExecutorBlockStrategyEnum.COVER_EARLY;
+                ExecutorBlockStrategyEnum blockStrategy = (ExecutorBlockStrategyEnum)Enum.Parse(typeof(ExecutorBlockStrategyEnum), triggerParam.executorBlockStrategy);
                 if (ExecutorBlockStrategyEnum.DISCARD_LATER == blockStrategy)
                 {
                     // discard when running
@@ -125,8 +125,7 @@ namespace JobClient.impl
                 {
                     // just queue trigger
                 }
-
-                throw new NotImplementedException();
+                 
             }
 
             // replace thread (new or exists invalid)
