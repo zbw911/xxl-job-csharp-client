@@ -47,7 +47,6 @@ namespace JobClient.executor
         }
 
 
-
         public void setLogPath(String logPath)
         {
             this.logPath = logPath;
@@ -56,7 +55,7 @@ namespace JobClient.executor
         public void start()
         {
             // init admin-client
-            //initAdminBizList(adminAddresses, accessToken);
+            initAdminBizList(adminAddresses, accessToken);
 
             // init executor-jobHandlerRepository
 
@@ -77,8 +76,8 @@ namespace JobClient.executor
         {
             port = ServerDispose.Start(port);
 
-            ExecutorRegistryThread.RegJobThread(adminAddresses, appName, ip, port, accessToken);
-
+            //ExecutorRegistryThread.RegJobThread(adminAddresses, appName, ip, port, accessToken);
+            ExecutorRegistryThread.getInstance().start(port, ip, appName);
         }
 
         public void destroy()

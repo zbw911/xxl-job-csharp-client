@@ -4,6 +4,8 @@ using JobClient.executor;
 using JobClient.impl;
 using JobClient.model;
 using JobClient.utils;
+using log4net;
+using log4net.Config;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,12 +23,7 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
 
-            //HttpServer httpServer = new HttpServer(1);
-            //httpServer.Start(7070);
-            //httpServer.ProcessRequest += HttpServer_ProcessRequest;
-            ////JsonTest();
 
-            //Reg();
 
             XxlJobExecutor xxlJobExecutor = new XxlJobExecutor();
             xxlJobExecutor.setLocalIp("127.0.0.1");
@@ -36,79 +33,19 @@ namespace ConsoleApp1
             xxlJobExecutor.setPort(7070);
             xxlJobExecutor.start();
 
+            Log4netManager.GetLogger("11111").Info("started");
 
             Console.ReadKey();
         }
 
 
-        //static void Reg()
-        //{
-        //    var t = new Thread(x =>
-        //    {
-        //        while (true)
-        //        {
-        //            var result = requestTo("http://localhost:8080/api", RegUtil.Registry());
 
-        //            Console.WriteLine("注册" + result);
-
-        //            Thread.Sleep(30 * 1000);
-        //        }
-
-        //    });
-        //    t.Start();
-        //}
-
-        private static void HttpServer_ProcessRequest(HttpListenerContext obj)
-        {
-            var request = obj.Request;
-
-            string text = "";
-            // convert stream to string
-            using (StreamReader reader = new StreamReader(request.InputStream))
-            {
-                text = reader.ReadToEnd();
-
-                Console.WriteLine(text);
-            }
-
-            var rpcrequest = Newtonsoft.Json.JsonConvert.DeserializeObject<RpcRequest>(text);
-
-            ExecutorBizImpl executorBizImpl = new ExecutorBizImpl();
-            switch (rpcrequest.methodName)
-            {
-                case "run":
-                    {
-
-                        var result = executorBizImpl.run(Newtonsoft.Json.JsonConvert.DeserializeObject<TriggerParam>(rpcrequest.parameters[0].ToString()));
-                        break;
-                    }
-                case "kill":
-                    {
-
-                        break;
-                    }
-                default:
-                    break;
-            }
-
-
-            RpcResponse rpcResponse = new RpcResponse
-            {
-                error = null,
-                result = ReturnT<string>.SUCCESS
-            };
-
-            ResponeHandler.ResponseHtml(obj.Response, Newtonsoft.Json.JsonConvert.SerializeObject(rpcResponse));
-        }
-
-        /*
-         * 
-         {"serverAddress":"127.0.0.1:7070","createMillisTime":1525927906577,"accessToken":"","className":"com.xxl.job.core.biz.ExecutorBiz","methodName":"run","parameterTypes":["com.xxl.job.core.biz.model.TriggerParam"],"parameters":[{"jobId":8,"executorHandler":"shardingJobHandler","executorParams":"","executorBlockStrategy":"SERIAL_EXECUTION","logId":188541,"logDateTim":1525927906577,"glueType":"BEAN","glueSource":"","glueUpdatetime":1525927571000,"broadcastIndex":0,"broadcastTotal":1}]}
-         * 
-         * */
 
 
     }
+
+
+
 
 
 

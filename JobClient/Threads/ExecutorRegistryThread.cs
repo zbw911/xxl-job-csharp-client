@@ -1,4 +1,8 @@
-﻿using JobClient.utils;
+﻿using JobClient.biz;
+using JobClient.enums;
+using JobClient.model;
+using JobClient.utils;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +16,7 @@ namespace JobClient.executor
 {
     class ExecutorRegistryThread
     {
-
+        private static ILog logger = LogManager.GetLogger(typeof(ExecutorRegistryThread));
 
         public static void RegJobThread(string adminaddresses, string executorappname, string executorip, int executorPort, string accessToken)
         {
@@ -29,6 +33,137 @@ namespace JobClient.executor
 
             });
             t.Start();
+        }
+
+
+        private static ExecutorRegistryThread instance = new ExecutorRegistryThread();
+        private Thread registryThread;
+        private volatile bool toStop1 = false;
+
+        public static ExecutorRegistryThread getInstance()
+        {
+            return instance;
+        }
+
+        public void start(int port, String ip, String appName)
+        {
+
+            // valid
+            if (appName == null || appName.Trim().Length == 0)
+            {
+                logger.Warn(">>>>>>>>>>>> xxl-job, executor registry config fail, appName is null.");
+                return;
+            }
+            if (XxlJobExecutor.getAdminBizList() == null)
+            {
+                logger.Warn(">>>>>>>>>>>> xxl-job, executor registry config fail, adminAddresses is null.");
+                return;
+            }
+
+            // executor address (generate addredd = ip:port)
+            String executorAddress;
+            if (ip != null && ip.Trim().Length > 0)
+            {
+                executorAddress = ip.Trim() + (":") + port;
+            }
+            else
+            {
+                executorAddress = IpUtil.getIpPort(port);
+            }
+
+            registryThread = new Thread(
+                () =>
+{
+    // registry
+    while (!toStop1)
+    {
+        try
+        {
+            RegistryParam registryParam = new RegistryParam(RegistryConfig.RegistType.EXECUTOR.ToString(), appName, executorAddress);
+            foreach (AdminBiz adminBiz in XxlJobExecutor.getAdminBizList())
+            {
+                try
+                {
+                    Object registry = adminBiz.registry(registryParam);
+                    ReturnT<String> registryResult = adminBiz.registry(registryParam);
+                    if (registryResult != null && ReturnT<string>.SUCCESS_CODE == registryResult.code)
+                    {
+                        registryResult = ReturnT<string>.SUCCESS;
+                        logger.Info(string.Format(">>>>>>>>>>> xxl-job registry success, registryParam:{0}, registryResult:{1}", registryParam, registryResult));
+                        break;
+                    }
+                    else
+                    {
+                        logger.Info(string.Format(">>>>>>>>>>> xxl-job registry fail, registryParam:{0}, registryResult:{1}", registryParam, registryResult));
+                    }
+                }
+                catch (Exception e)
+                {
+                    logger.Info($">>>>>>>>>>> xxl-job registry error, registryParam:{registryParam}", e);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            logger.Error(e.Message, e);
+        }
+
+        Thread.Sleep(RegistryConfig.BEAT_TIMEOUT * 1000);
+
+    }
+
+    // registry remove
+    try
+    {
+        RegistryParam registryParam = new RegistryParam(RegistryConfig.RegistType.EXECUTOR.ToString(), appName, executorAddress);
+        foreach (AdminBiz adminBiz in XxlJobExecutor.getAdminBizList())
+        {
+            try
+            {
+                ReturnT<String> registryResult = adminBiz.registryRemove(registryParam);
+                if (registryResult != null && ReturnT<string>.SUCCESS_CODE == registryResult.code)
+                {
+                    registryResult = ReturnT<string>.SUCCESS;
+                    logger.InfoFormat(">>>>>>>>>>> xxl-job registry-remove success, registryParam:{}, registryResult:{}", new Object[] { registryParam, registryResult });
+                    break;
+                }
+                else
+                {
+                    logger.InfoFormat(">>>>>>>>>>> xxl-job registry-remove fail, registryParam:{}, registryResult:{}", new Object[] { registryParam, registryResult });
+                }
+            }
+            catch (Exception e)
+            {
+                logger.InfoFormat(">>>>>>>>>>> xxl-job registry-remove error, registryParam:{}", registryParam, e);
+            }
+
+        }
+    }
+    catch (Exception e)
+    {
+        logger.Error(e.Message, e);
+    }
+    logger.Warn(">>>>>>>>>>>> xxl-job, executor registry thread destory.");
+
+}
+         );
+            registryThread.IsBackground = (true);
+            registryThread.Start();
+        }
+
+        public void toStop()
+        {
+            toStop1 = true;
+            // interrupt and wait
+            registryThread.Interrupt();
+            try
+            {
+                registryThread.Join();
+            }
+            catch (ThreadInterruptedException e)
+            {
+                logger.Error(e.Message, e);
+            }
         }
 
         private static string requestTo(string url, string requestStr)
