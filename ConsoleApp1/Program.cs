@@ -30,7 +30,7 @@ namespace ConsoleApp1
             xxlJobExecutor.setAppName("windows-job");
             //xxlJobExecutor.setLogPath("");
             xxlJobExecutor.setAdminAddresses("http://localhost:8080");
-            xxlJobExecutor.setPort(7070);
+            xxlJobExecutor.setPort(7071);
             xxlJobExecutor.start();
 
             Log4netManager.GetLogger("11111").Info("started");

@@ -95,7 +95,7 @@ namespace JobClient.executor
 
                             XxlJobFileAppender.contextHolder.Value = (logFileName);
                             ShardingUtil.setShardingVo(new ShardingUtil.ShardingVO(triggerParam.broadcastIndex, triggerParam.broadcastTotal));
-                            XxlJobLogger.log("<br>----------- xxl-job job execute start -----------<br>----------- Params:" + string.Join(",", handlerParams));
+                            XxlJobLogger.log("<br>----------- xxl-job job execute start -----------<br>----------- Params:" + string.Join(",", handlerParams ?? new[] { "" }));
 
                             executeResult = handler.execute(handlerParams);
                             if (executeResult == null)
