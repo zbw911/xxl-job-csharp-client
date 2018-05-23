@@ -130,7 +130,7 @@ namespace JobClient.executor
                 }
                 if (loadJobHandler(name) != null)
                 {
-                    throw new Exception("xxl-job jobhandler naming conflicts.");
+                    throw new Exception("xxl-job jobhandler naming conflicts." + name);
                 }
 
                 registJobHandler(name, item);
@@ -153,7 +153,7 @@ namespace JobClient.executor
         {
             JobThread newJobThread = new JobThread(jobId, handler);
             newJobThread.start();
-            logger.Info(string.Format(">>>>>>>>>>> xxl-job regist JobThread success, jobId:{0}, handler:{1}",  jobId, handler ));
+            logger.Info(string.Format(">>>>>>>>>>> xxl-job regist JobThread success, jobId:{0}, handler:{1}", jobId, handler));
 
 
             //JobThread oldJobThread
